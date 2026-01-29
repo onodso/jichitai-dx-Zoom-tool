@@ -1,0 +1,13 @@
+dx_progress:
+  columns:
+    municipality_id: 団体コード
+    score: 総合スコア
+  source_file: 市区町村毎のDX進捗状況_市区町村比較.csv
+municipalities:
+  columns:
+    budget: budget
+    municipality_id: code
+    name: name
+    population: population
+    prefecture: prefecture
+  source_file: localgov_master_full.csv

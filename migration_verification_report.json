@@ -1,0 +1,12 @@
+{
+  "status": "partial_success",
+  "steps": {
+    "validation": "success",
+    "schema_mapping": "success",
+    "transformation": "success",
+    "db_import": "pending"
+  },
+  "metrics": {
+    "cleaned_records": 1996
+  }
+}

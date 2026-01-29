@@ -1,0 +1,73 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Tokyo",
+                "score": 90
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            139.6,
+                            35.6
+                        ],
+                        [
+                            139.8,
+                            35.6
+                        ],
+                        [
+                            139.8,
+                            35.8
+                        ],
+                        [
+                            139.6,
+                            35.8
+                        ],
+                        [
+                            139.6,
+                            35.6
+                        ]
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Osaka",
+                "score": 70
+            },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            135.4,
+                            34.6
+                        ],
+                        [
+                            135.6,
+                            34.6
+                        ],
+                        [
+                            135.6,
+                            34.8
+                        ],
+                        [
+                            135.4,
+                            34.8
+                        ],
+                        [
+                            135.4,
+                            34.6
+                        ]
+                    ]
+                ]
+            }
+        }
+    ]
+}

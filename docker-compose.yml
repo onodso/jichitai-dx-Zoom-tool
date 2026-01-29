@@ -1,0 +1,60 @@
+# docker-compose.yml（最適化版）
+version: '3.8'
+services:
+  # 1. Web層（軽量化）
+  # nginx:
+  #   image: nginx:alpine
+  #   mem_limit: 64m
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - nextjs
+  #     - api
+
+  # nextjs:
+  #   build: ./frontend
+  #   mem_limit: 256m
+  #   environment:
+  #     - NODE_ENV=development # Changed to development for local dev
+  #     - NEXT_TELEMETRY_DISABLED=1
+  #   ports:
+  #     - "3000:3000"
+
+  # 2. API層（統合）
+  api:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    mem_limit: 512m
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://user:pass@postgres:5432/localgov
+    ports:
+      - "4000:4000" # Expose for local testing
+    depends_on:
+      - redis
+      - postgres
+
+  # 3. データ層
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    mem_limit: 768m
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/cleaned:/data/cleaned
+
+  redis:
+    image: redis:7-alpine
+    mem_limit: 128m
+    command: ["redis-server", "--maxmemory", "512mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data

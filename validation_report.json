@@ -1,0 +1,7 @@
+{
+  "status": "failure",
+  "files": {},
+  "errors": [
+    "Source directory not found: ../../data/source"
+  ]
+}
