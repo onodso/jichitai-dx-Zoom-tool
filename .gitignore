@@ -16,3 +16,5 @@ venv/
 
 # Data (Sensitive potentially)
 data/source/
+data/cleaned/
+data/postgres/

@@ -11,3 +11,6 @@ All notable changes to this project will be documented in this file.
   - Implemented `ProposalCache` with similarity calculation logic (Tier 1/2).
   - Implemented `PatternMatcher` for Tier 3 template selection.
 - **Security**: Added `.env` and `.gitignore` via Security Guard skill.
+- **Phase 3 (WIP)**: 
+  - Integrated `@google/generative-ai` SDK.
+  - Implemented `GeminiClient` with Japanese docstrings.
