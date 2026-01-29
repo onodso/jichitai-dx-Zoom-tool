@@ -11,6 +11,14 @@ All notable changes to this project will be documented in this file.
   - Implemented `ProposalCache` with similarity calculation logic (Tier 1/2).
   - Implemented `PatternMatcher` for Tier 3 template selection.
 - **Security**: Added `.env` and `.gitignore` via Security Guard skill.
-- **Phase 3 (WIP)**: 
+- **Phase 3**: 
   - Integrated `@google/generative-ai` SDK.
-  - Implemented `GeminiClient` with Japanese docstrings.
+  - Implemented `GeminiClient` with API wrapper.
+  - Implemented `TieredProposalGenerator` with:
+    - Tier 1 (Full Proposal) using Gemini Pro.
+    - Tier 2 (Summary) using Gemini Pro.
+    - Tier 3 (Template) using Pattern Matching fallback.
+  - Verified graceful degradation when API key is missing.
+- **Infrastructure**:
+  - Optimized Redis configuration (Memory Limit: 256MB, MaxMemory: 200MB) to prevent OOM.
+  - Updated System Architecture in README.md.

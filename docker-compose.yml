@@ -52,8 +52,8 @@ services:
 
   redis:
     image: redis:7-alpine
-    mem_limit: 128m
-    command: ["redis-server", "--maxmemory", "512mb", "--maxmemory-policy", "allkeys-lru"]
+    mem_limit: 256m
+    command: ["redis-server", "--maxmemory", "200mb", "--maxmemory-policy", "allkeys-lru"]
     ports:
       - "6379:6379"
     volumes:
