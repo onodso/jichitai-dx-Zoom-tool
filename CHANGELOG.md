@@ -27,3 +27,7 @@ All notable changes to this project will be documented in this file.
   - Added Backend proxy endpoint `/api/search` for vector search.
   - Integrated Search UI in Frontend Header with auto-complete.
   - Updated Docker infrastructure with `search-api` service and Japanese tokenizer dependencies.
+- **Phase 5**:
+  - Enhanced Dashboard visualization with `recharts`.
+  - Added Backend statistics endpoint `/api/dashboard/stats`.
+  - Implemented `DXScoreChart` and `RankingChart` for real-time data visualization.

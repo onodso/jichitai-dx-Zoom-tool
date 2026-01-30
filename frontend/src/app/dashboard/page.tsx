@@ -1,40 +1,72 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, FileText, CheckCircle2, TrendingUp } from "lucide-react"
+import { DXScoreChart } from "@/components/dashboard/DXScoreChart"
+import { RankingChart } from "@/components/dashboard/RankingChart"
 
-const stats = [
-    {
-        title: "Total Municipalities",
-        value: "1,741",
-        description: "Across 47 Prefectures",
-        icon: Building2,
-        color: "text-blue-500",
-    },
-    {
-        title: "Proposals Generated",
-        value: "128",
-        description: "+14% from last month",
-        icon: FileText,
-        color: "text-purple-500",
-    },
-    {
-        title: "Avg. Similarity",
-        value: "0.78",
-        description: "High confidence matches",
-        icon: CheckCircle2,
-        color: "text-green-500",
-    },
-    {
-        title: "DX Score Avg",
-        value: "54.2",
-        description: "+2.1 points YoY",
-        icon: TrendingUp,
-        color: "text-orange-500",
-    },
-]
+type DashboardStats = {
+    total: number
+    avgScore: number
+    distribution: { name: string; value: number }[]
+    topRanking: { name: string; score: number }[]
+}
 
 export default function DashboardPage() {
+    const [stats, setStats] = useState<DashboardStats | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const res = await fetch('/api/dashboard/stats')
+                if (res.ok) {
+                    const data = await res.json()
+                    setStats(data)
+                }
+            } catch (error) {
+                console.error("Failed to fetch stats", error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchStats()
+    }, [])
+
+    const statCards = [
+        {
+            title: "Total Municipalities",
+            value: stats?.total.toLocaleString() || "...",
+            description: "Across 47 Prefectures",
+            icon: Building2,
+            color: "text-blue-500",
+        },
+        {
+            title: "Avg. DX Score",
+            value: stats?.avgScore || "...",
+            description: "National Average",
+            icon: TrendingUp,
+            color: "text-orange-500",
+        },
+        {
+            title: "Proposals Generated",
+            value: "128",
+            description: "+14% from last month",
+            icon: FileText,
+            color: "text-purple-500",
+        },
+        {
+            title: "System Status",
+            value: "Operational",
+            description: "All systems normal",
+            icon: CheckCircle2,
+            color: "text-green-500",
+        },
+    ]
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in duration-500">
             <div>
                 <h2 className="text-3xl font-bold tracking-tight glow-text text-white">Dashboard</h2>
                 <p className="text-muted-foreground">
@@ -43,7 +75,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {stats.map((stat) => (
+                {statCards.map((stat) => (
                     <Card key={stat.title} className="glass border-white/10 bg-white/5 transition-all hover:bg-white/10">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -64,32 +96,30 @@ export default function DashboardPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="glass border-white/10 col-span-4 bg-white/5">
                     <CardHeader>
-                        <CardTitle className="text-white">Recent Activity</CardTitle>
+                        <CardTitle className="text-white">DX Score Distribution</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-sm text-neutral-400">
-                            No recent activity found.
-                        </div>
+                    <CardContent className="pl-2">
+                        {stats ? (
+                            <DXScoreChart data={stats.distribution} />
+                        ) : (
+                            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                                Loading...
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
                 <Card className="glass border-white/10 col-span-3 bg-white/5">
                     <CardHeader>
-                        <CardTitle className="text-white">System Status</CardTitle>
+                        <CardTitle className="text-white">Top 5 Municipalities</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-2">
-                            <div className="flex items-center justify-between text-sm">
-                                <span className="text-neutral-400">API Status</span>
-                                <span className="text-green-400 flex items-center gap-1">
-                                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                                    Operational
-                                </span>
+                        {stats ? (
+                            <RankingChart data={stats.topRanking} />
+                        ) : (
+                            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+                                Loading...
                             </div>
-                            <div className="flex items-center justify-between text-sm">
-                                <span className="text-neutral-400">ML Model</span>
-                                <span className="text-blue-400">GLuCoSE-base-ja</span>
-                            </div>
-                        </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>

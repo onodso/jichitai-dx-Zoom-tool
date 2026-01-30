@@ -77,6 +77,17 @@ app.post('/api/proposals', async (req, res) => {
     }
 });
 
+// Dashboard Stats Endpoint
+app.get('/api/dashboard/stats', async (req, res) => {
+    try {
+        const stats = await municipalityService.getStats();
+        res.json(stats);
+    } catch (error) {
+        console.error('Stats Error:', error);
+        res.status(500).json({ error: 'Failed to fetch stats' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
 });

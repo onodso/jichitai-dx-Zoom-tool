@@ -15,12 +15,14 @@ graph TD
         DB[(PostgreSQL + TimescaleDB)]
         Redis[(Redis Cache)]
         Gemini[Gemini Pro API]
+        Search[Python Search Service]
     end
 
     NextJS --> API
     API --> DB
     API --> Redis
     API --> Gemini
+    API --> Search
 ```
 
 ## Components
