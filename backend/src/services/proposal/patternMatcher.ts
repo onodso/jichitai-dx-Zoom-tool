@@ -1,4 +1,5 @@
 import { Municipality, Proposal } from '../../types';
+import crypto from 'crypto';
 
 interface Template {
     id: string;

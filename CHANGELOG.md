@@ -22,3 +22,8 @@ All notable changes to this project will be documented in this file.
 - **Infrastructure**:
   - Optimized Redis configuration (Memory Limit: 256MB, MaxMemory: 200MB) to prevent OOM.
   - Updated System Architecture in README.md.
+- **Phase 4**:
+  - Implemented Semantic Search Service (Python/FastAPI) using `pkshatech/GLuCoSE-base-ja`.
+  - Added Backend proxy endpoint `/api/search` for vector search.
+  - Integrated Search UI in Frontend Header with auto-complete.
+  - Updated Docker infrastructure with `search-api` service and Japanese tokenizer dependencies.

@@ -1,0 +1,17 @@
+pandas
+psycopg2-binary
+pyyaml
+openpyxl
+requests
+numpy
+scikit-learn
+sentence-transformers
+torch
+transformers
+fastapi
+uvicorn
+sentencepiece
+fugashi
+ipadic
+protobuf
+tiktoken

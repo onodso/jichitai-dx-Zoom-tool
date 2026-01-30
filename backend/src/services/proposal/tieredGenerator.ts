@@ -2,6 +2,7 @@ import { Municipality, Proposal, TierConfig } from '../../types';
 import { ProposalCache } from '../cache/proposalCache';
 import { GeminiClient } from '../ai/geminiClient';
 import { PatternMatcher } from './patternMatcher';
+import crypto from 'crypto';
 
 export class TieredProposalGenerator {
     private cache: ProposalCache;

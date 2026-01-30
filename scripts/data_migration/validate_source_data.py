@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 # Configuration
-SOURCE_DIR = '../../data/source' # Assuming data is placed here
+SOURCE_DIR = os.path.join(os.path.dirname(__file__), '../../data/source')
 REPORT_FILE = 'validation_report.json'
 
 REQUIRED_FILES = [

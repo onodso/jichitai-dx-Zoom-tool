@@ -12,14 +12,14 @@ services:
   #     - nextjs
   #     - api
 
-  # nextjs:
-  #   build: ./frontend
-  #   mem_limit: 256m
-  #   environment:
-  #     - NODE_ENV=development # Changed to development for local dev
-  #     - NEXT_TELEMETRY_DISABLED=1
-  #   ports:
-  #     - "3000:3000"
+  nextjs:
+    build: ./frontend
+    mem_limit: 256m
+    environment:
+      - NODE_ENV=development # Changed to development for local dev
+      - NEXT_TELEMETRY_DISABLED=1
+    ports:
+      - "3000:3000"
 
   # 2. API層（統合）
   api:
@@ -30,11 +30,31 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - POSTGRES_URL=postgresql://user:pass@postgres:5432/localgov
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - HF_TOKEN=${HF_TOKEN}
     ports:
       - "4000:4000" # Expose for local testing
     depends_on:
       - redis
       - postgres
+    volumes:
+      - ./data:/app/data
+
+  # 2.5 Search Service (Python/FastAPI)
+  search-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.search # WE NEED TO CREATE THIS
+    image: python:3.11-slim
+    working_dir: /app
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    ports:
+      - "8000:8000"
+    command: uvicorn scripts.api.search_server:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+      - ./data:/app/data
 
   # 3. データ層
   postgres:
@@ -58,3 +78,18 @@ services:
       - "6379:6379"
     volumes:
       - ./data/redis:/data
+
+  # データ移行・スクリプト実行用の一時コンテナ
+  script-runner:
+    image: python:3.11-slim
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=postgres
+      - HF_TOKEN=${HF_TOKEN}
+    command: tail -f /dev/null
+
